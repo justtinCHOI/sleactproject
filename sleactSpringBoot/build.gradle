@@ -1,0 +1,82 @@
+buildscript {
+    repositories {
+        mavenCentral()// +
+    }
+}
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.4'
+    id 'io.spring.dependency-management' version '1.1.6'
+    id 'com.github.node-gradle.node' version '7.0.0'//+
+}
+group = 'com.sleact'
+version = '0.0.1-SNAPSHOT'
+
+ext {
+    queryDslVersion = '5.0.0' // +
+}
+
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation' // +
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.java-websocket:Java-WebSocket:1.5.2' // +
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'// +
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok' // +
+    testAnnotationProcessor 'org.projectlombok:lombok' // +
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    implementation 'com.google.code.gson:gson:2.8.9' // +
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta" // +
+    implementation 'net.coobird:thumbnailator:0.4.19' // +
+
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    implementation 'org.json:json:20231013' // +
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0'
+
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'//+
+
+    annotationProcessor(
+            "jakarta.persistence:jakarta.persistence-api",
+            "jakarta.annotation:jakarta.annotation-api",
+            "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta")
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final' // +
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final' // +
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+compileJava.dependsOn('clean') // +
